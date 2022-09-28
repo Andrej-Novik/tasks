@@ -69,14 +69,20 @@ export default createStore({
       },
     ],
   },
-  getters: {},
+  getters: {
+    getLists(state) {
+      return state.lists.filter((list) => list.boardName === state.openedBoard);
+    },
+    getTasks(state) {
+      return state.tasks.filter((task) => task.boardName === state.openedBoard);
+    },
+  },
   mutations: {
     setOpenedBoard(state, boardName) {
       state.openedBoard = boardName;
       localStorage.setItem("openedBoard", state.openedBoard);
     },
     dropTask(state, { taskId, listName }) {
-      console.log(taskId, listName);
       state.tasks = state.tasks.map((task) =>
         task.id === taskId ? { ...task, listName: listName } : task
       );

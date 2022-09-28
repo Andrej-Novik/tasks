@@ -15,7 +15,7 @@
     <main :class="$style.content">
       <div :class="$style.lists" v-if="$store.state.openedBoard">
         <div
-          v-for="list in getLists"
+          v-for="list in $store.getters.getLists"
           :key="list.id"
           :class="$style.list"
           @drop="onDrop($event, list.listName)"
@@ -24,7 +24,9 @@
         >
           <p>{{ list.listName }}</p>
           <div
-            v-for="task in getTasks.filter((i) => i.listName === list.listName)"
+            v-for="task in $store.getters.getTasks.filter(
+              (i) => i.listName === list.listName
+            )"
             :key="task.id"
             :class="$style.task"
             @dragstart="onDragStart($event, task)"
@@ -42,18 +44,6 @@
 <script>
 export default {
   name: "App",
-  computed: {
-    getLists() {
-      return this.$store.state.lists.filter(
-        (list) => list.boardName === this.$store.state.openedBoard
-      );
-    },
-    getTasks() {
-      return this.$store.state.tasks.filter(
-        (task) => task.boardName === this.$store.state.openedBoard
-      );
-    },
-  },
   methods: {
     onDragStart(e, task) {
       e.dataTransfer.dropEffect = "move";
